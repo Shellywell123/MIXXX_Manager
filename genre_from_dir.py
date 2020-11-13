@@ -1,4 +1,7 @@
-from mutagen.easyid3 import EasyID3
+
+from mutagen.id3 import ID3NoHeaderError
+from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC
+
 import os
 
 # def convert_to_mp3(path_to_file):
@@ -11,18 +14,26 @@ import os
 #     os.system(os_str)
 #     os.system()
 
-lib = "path to ... /Mixing_Lib"
+lib = "/media/shellywell/Mixing_Lib"
 
 for genre_dir in os.listdir(lib):
 
     print (genre_dir)
 
     for track in os.listdir(lib+'/'+genre_dir):
-        print(' - ',track)
+        fname =lib+'/'+genre_dir+'/'+track
 
-        try:
-            audio = EasyID3(lib+'/'+genre_dir+'/'+track)
-            audio['genre'] = str(genre_dir)
-            audio.save()
-        except:
-            pass
+        if track[-4:] == ".mp3":
+          #  print(' - ',track
+
+            # Read ID3 tag or create it if not present
+            try: 
+                tags = ID3(fname)
+            except ID3NoHeaderError:
+                print("Adding ID3 header")
+                tags = ID3()
+
+            tags["TCON"] = TCON(encoding=3, text=str(genre_dir))
+
+            tags.save(fname)
+ 
