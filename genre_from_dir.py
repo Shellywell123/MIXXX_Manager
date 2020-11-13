@@ -14,7 +14,7 @@ import os
 #     os.system(os_str)
 #     os.system()
 
-lib = "/media/shellywell/Mixing_Lib"
+lib = "/home/shellywell/Music/Mixing_Lib"
 
 for genre_dir in os.listdir(lib):
 
